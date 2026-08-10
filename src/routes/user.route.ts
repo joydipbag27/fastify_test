@@ -6,6 +6,7 @@ import {
   errorResponseSchema,
   loginSchema,
   loginResponseSchema,
+  successResponseSchema,
 } from "../schemas/user.schema.js";
 import { db } from "../db/index.js";
 import bcrypt from "bcrypt";
@@ -173,6 +174,41 @@ const userRouter: FastifyPluginAsync = async (fastify) => {
       return {
         userId: request.user.id,
       };
+    },
+  );
+
+  app.post(
+    "/logout",
+    {
+      schema: {
+        response: {
+          200: successResponseSchema,
+          401: errorResponseSchema,
+        },
+      },
+      preHandler: authenticate,
+    },
+
+    async (request, reply) => {
+      const sessionId = request.cookies.sid;
+
+      if (!sessionId) {
+        return reply.code(401).send({
+          success: false,
+          message: "Unauthorized",
+        });
+      }
+
+      await db.deleteFrom("sessions").where("id", "=", sessionId).execute();
+
+      reply.clearCookie("sid", {
+        path: "/",
+      });
+
+      return reply.code(200).send({
+        success: true,
+        message: "logout successful",
+      });
     },
   );
 };

@@ -6,8 +6,6 @@ declare module "fastify" {
       id: string;
       name: string;
       email: string;
-      user_id: string;
-      expires_at: Date;
     };
   }
 }

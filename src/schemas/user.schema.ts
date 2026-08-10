@@ -1,4 +1,4 @@
-import { success, z } from "zod";
+import { z } from "zod";
 
 export const createUserSchema = z.object({
   name: z
@@ -47,3 +47,7 @@ export const errorResponseSchema = z.object({
   message: z.string(),
 });
 
+export const successResponseSchema = z.object({
+  success: z.literal(true),
+  message: z.string()
+})

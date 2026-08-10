@@ -13,7 +13,6 @@ export const authenticate = async (
       message: "Unauthorized",
     });
   }
-  const start = performance.now();
 
   const sessionInfo = await db
     .selectFrom("sessions")
@@ -27,8 +26,6 @@ export const authenticate = async (
     ])
     .where("sessions.id", "=", sessionId)
     .executeTakeFirst();
-
-  console.log("session query:", performance.now() - start);
 
   if (!sessionInfo) {
     return reply.code(401).send({
@@ -44,5 +41,9 @@ export const authenticate = async (
     });
   }
 
-  request.user = sessionInfo;
+  request.user = {
+    id: sessionInfo.user_id,
+    email: sessionInfo.email,
+    name: sessionInfo.name,
+  };
 };
