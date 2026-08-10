@@ -9,6 +9,7 @@ import {
 } from "../schemas/user.schema.js";
 import { db } from "../db/index.js";
 import bcrypt from "bcrypt";
+import { authenticate } from "../hooks/authenticate.js";
 
 const userRouter: FastifyPluginAsync = async (fastify) => {
   const app = fastify.withTypeProvider<ZodTypeProvider>();
@@ -146,7 +147,7 @@ const userRouter: FastifyPluginAsync = async (fastify) => {
       reply.setCookie("sid", sessionInfo.id, {
         httpOnly: true,
         sameSite: "lax",
-        secure: true,
+        secure: false,
         maxAge: 60 * 60 * 24 * 30,
         path: "/",
       });
@@ -159,6 +160,18 @@ const userRouter: FastifyPluginAsync = async (fastify) => {
           email: userInfo.email,
           user_id: userInfo.id,
         },
+      };
+    },
+  );
+
+  app.get(
+    "/me",
+    {
+      preHandler: authenticate,
+    },
+    async (request) => {
+      return {
+        userId: request.user.id,
       };
     },
   );
