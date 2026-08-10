@@ -6,6 +6,7 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from "fastify-type-provider-zod";
+import fastifyCookie from "@fastify/cookie";
 
 const app = fastify({
   logger: true,
@@ -13,6 +14,7 @@ const app = fastify({
 
 app.register(cors);
 app.register(helmet);
+app.register(fastifyCookie)
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);

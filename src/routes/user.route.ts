@@ -109,12 +109,31 @@ const userRouter: FastifyPluginAsync = async (fastify) => {
         });
       }
 
+      const existingSessions = await db
+        .selectFrom("sessions")
+        .select(["id", "created_at"])
+        .where("user_id", "=", userInfo.id)
+        .orderBy("created_at", "asc")
+        .execute();
+
+      if (existingSessions.length > 1) {
+        const oldestSession = existingSessions[0];
+
+        if (oldestSession) {
+          await db
+            .deleteFrom("sessions")
+            .where("id", "=", oldestSession.id)
+            .execute();
+        }
+      }
+
       const sessionInfo = await db
         .insertInto("sessions")
         .values({
           user_id: userInfo.id,
           expires_at: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
         })
+        .returning("id")
         .executeTakeFirst();
 
       if (!sessionInfo) {
@@ -123,6 +142,14 @@ const userRouter: FastifyPluginAsync = async (fastify) => {
           message: "Server failed to create session",
         });
       }
+
+      reply.setCookie("sid", sessionInfo.id, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: true,
+        maxAge: 60 * 60 * 24 * 30,
+        path: "/",
+      });
 
       return {
         success: true,
