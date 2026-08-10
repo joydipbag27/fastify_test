@@ -27,6 +27,7 @@ const userRouter: FastifyPluginAsync = async (fastify) => {
       },
     },
     async (request, reply) => {
+      const name =  request.body.name.trim()
       const email = request.body.email.trim().toLowerCase();
 
       const existingUser = await db
@@ -48,8 +49,8 @@ const userRouter: FastifyPluginAsync = async (fastify) => {
       const user = await db
         .insertInto("users")
         .values({
-          name: request.body.name,
-          email: request.body.email,
+          name,
+          email,
           password: hashedPass,
         })
         .returning(["id", "name", "email", "created_at"])
@@ -118,7 +119,7 @@ const userRouter: FastifyPluginAsync = async (fastify) => {
         .orderBy("created_at", "asc")
         .execute();
 
-      if (existingSessions.length > 1) {
+      if (existingSessions.length >= 2) {
         const oldestSession = existingSessions[0];
 
         if (oldestSession) {
