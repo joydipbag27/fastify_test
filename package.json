@@ -1,0 +1,38 @@
+{
+  "name": "fastify_test",
+  "version": "1.0.0",
+  "main": "./dist/server.js",
+  "scripts": {
+    "start": "node dist/app.js",
+    "build": "tsc",
+    "dev": "tsx watch src/server.ts",
+    "db:migrate": "tsx src/db/migrate.ts"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.20.0",
+      "onFail": "download"
+    }
+  },
+  "type": "module",
+  "dependencies": {
+    "@fastify/cors": "^11.3.0",
+    "@fastify/helmet": "^13.1.0",
+    "@fastify/jwt": "^10.2.1",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "fastify": "^5.11.2",
+    "fastify-type-provider-zod": "^7.0.0",
+    "kysely": "^0.29.4",
+    "pg": "^8.22.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/node": "^26.1.2",
+    "@types/pg": "^8.21.0",
+    "tsx": "^4.23.10",
+    "typescript": "^7.0.2"
+  }
+}
