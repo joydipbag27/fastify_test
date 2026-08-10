@@ -1,4 +1,4 @@
-import { type FastifyRequest, type FastifyReply, fastify } from "fastify";
+import type { FastifyRequest, FastifyReply } from "fastify";
 import { db } from "../db/index.js";
 
 export const authenticate = async (
@@ -13,13 +13,19 @@ export const authenticate = async (
       message: "Unauthorized",
     });
   }
-
   const start = performance.now();
 
   const sessionInfo = await db
     .selectFrom("sessions")
-    .select(["id", "user_id", "expires_at"])
-    .where("id", "=", sessionId)
+    .innerJoin("users", "users.id", "sessions.user_id")
+    .select([
+      "sessions.id",
+      "sessions.user_id",
+      "sessions.expires_at",
+      "users.name",
+      "users.email",
+    ])
+    .where("sessions.id", "=", sessionId)
     .executeTakeFirst();
 
   console.log("session query:", performance.now() - start);
@@ -38,22 +44,5 @@ export const authenticate = async (
     });
   }
 
-  const userStart = performance.now();
-
-  const userInfo = await db
-    .selectFrom("users")
-    .select("id")
-    .where("id", "=", sessionInfo.user_id)
-    .executeTakeFirst();
-
-  console.log("user query:", performance.now() - userStart);
-
-  if (!userInfo) {
-    return reply.code(401).send({
-      success: false,
-      message: "Unauthorized",
-    });
-  }
-
-  request.user = userInfo;
+  request.user = sessionInfo;
 };
