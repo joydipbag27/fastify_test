@@ -12,7 +12,10 @@ const app = fastify({
   logger: true,
 });
 
-app.register(cors);
+app.register(cors, {
+  origin: true,
+  credentials: true,
+});
 app.register(helmet);
 app.register(fastifyCookie)
 

@@ -6,7 +6,9 @@
     "start": "node dist/app.js",
     "build": "tsc",
     "dev": "tsx watch src/server.ts",
-    "db:migrate": "tsx src/db/migrate.ts"
+    "db:migrate": "tsx src/db/migrate.ts",
+    "client:dev": "pnpm --filter fastify-auth-client dev",
+    "client:build": "pnpm --filter fastify-auth-client build"
   },
   "devEngines": {
     "packageManager": {
