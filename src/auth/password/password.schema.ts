@@ -7,18 +7,12 @@ export const createUserSchema = z.object({
     .max(100)
     .regex(/^[A-Za-z\s]+$/, "Name can only contain letters and spaces"), // Restricting users to use emoji
   email: z.email(),
-  password: z
-    .string()
-    .min(6)
-    .max(100)
+  password: z.string().min(6).max(100),
 });
 
 export const loginSchema = z.object({
   email: z.email(),
-  password: z
-    .string()
-    .min(6)
-    .max(100)
+  password: z.string().min(6).max(100),
 });
 
 export const createUserResponseSchema = z.object({
@@ -39,15 +33,9 @@ export const loginResponseSchema = z.object({
     user_id: z.string(),
     name: z.string(),
     email: z.email(),
-  })
-})
-
-export const errorResponseSchema = z.object({
-  success: z.literal(false),
-  message: z.string(),
+  }),
 });
 
-export const successResponseSchema = z.object({
-  success: z.literal(true),
-  message: z.string()
-})
+
+export type CreateUserInput = z.infer<typeof createUserSchema>
+export type LoginInput = z.infer<typeof loginSchema>
