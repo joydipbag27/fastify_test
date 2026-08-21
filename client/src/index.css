@@ -186,6 +186,17 @@ body {
   color: var(--text-muted);
 }
 
+/* Center & Mono Text */
+.text-center {
+  text-align: center;
+  letter-spacing: 0.2em;
+  font-size: 1.15rem !important;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace, monospace;
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;
@@ -225,6 +236,36 @@ body {
   background: rgba(255, 255, 255, 0.12);
 }
 
+.btn-totp {
+  background: rgba(99, 102, 241, 0.12);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  font-size: 0.85rem;
+  padding: 0.75rem 1rem;
+}
+
+.btn-totp:hover:not(:disabled) {
+  background: rgba(99, 102, 241, 0.2);
+  color: #ffffff;
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  border-radius: var(--radius-sm);
+}
+
+.btn-icon:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -252,6 +293,25 @@ body {
 
 .link-btn:hover {
   color: #818cf8;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  margin-bottom: 1.25rem;
+  font-family: inherit;
+}
+
+.back-btn:hover {
+  color: var(--text-primary);
 }
 
 /* Message Banners */
@@ -295,12 +355,24 @@ body {
   justify-content: center;
 }
 
+.totp-icon-badge {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .user-details-card {
   background: var(--bg-inner);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   padding: 1rem;
-  margin: 1.5rem 0;
+  margin: 1.25rem 0;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -324,9 +396,85 @@ body {
   font-weight: 600;
 }
 
-.font-mono {
-  font-family: 'JetBrains Mono', monospace;
+/* TOTP Section in Dashboard */
+.totp-setup-section {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-top: 1.25rem;
+  text-align: left;
+}
+
+.totp-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.totp-section-header h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.totp-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.totp-status-badge.enabled {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+
+.totp-qr-box {
+  margin-top: 0.75rem;
+}
+
+.qr-code-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  margin: 0.75rem auto;
+  width: fit-content;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.totp-instruction {
   font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.uri-display-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: var(--bg-inner);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.75rem;
+}
+
+.uri-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Spinner & Animations */

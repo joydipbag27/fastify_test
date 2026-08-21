@@ -4,12 +4,12 @@ import bcrypt from "bcrypt";
 import type { CreateUserInput, LoginInput } from "./password.schema.js";
 
 type RegisterRequest = FastifyRequest<{
-    Body: CreateUserInput
-}>
+  Body: CreateUserInput;
+}>;
 
 type LoginRequest = FastifyRequest<{
-    Body: LoginInput
-}>
+  Body: LoginInput;
+}>;
 
 export const registerController = async (
   request: RegisterRequest,
@@ -90,6 +90,20 @@ export const loginController = async (
     });
   }
 
+  const totpInfo = await db
+    .selectFrom("user_totps")
+    .select(["user_id", "enabled"])
+    .where("user_id", "=", userInfo.id)
+    .executeTakeFirst();
+
+  if (totpInfo?.enabled) {
+    return reply.code(200).send({
+      success: true,
+      requiresTotp: true,
+      userId: userInfo.id,
+    });
+  }
+
   const existingSessions = await db
     .selectFrom("sessions")
     .select(["id", "created_at"])
@@ -135,11 +149,6 @@ export const loginController = async (
   return {
     success: true,
     message: "Login successful",
-    data: {
-      name: userInfo.name,
-      email: userInfo.email,
-      user_id: userInfo.id,
-    },
   };
 };
 

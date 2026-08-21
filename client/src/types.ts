@@ -6,21 +6,38 @@ export interface User {
   created_at?: string;
 }
 
+export interface PasswordLoginResponse {
+  success: boolean;
+  message?: string;
+  requiresTotp?: boolean;
+  userId?: string;
+  data?: {
+    name?: string;
+    email?: string;
+    user_id?: string;
+  };
+}
+
+export interface TotpSetupResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    uri: string;
+  };
+}
+
+export interface UserMeResponse {
+  userId: string;
+  name?: string;
+  email?: string;
+}
+
 export interface ApiResponse<T = any> {
   success: boolean;
   message?: string;
   data?: T;
   user?: T;
   userId?: string;
-}
-
-export interface ApiLog {
-  id: string;
-  timestamp: string;
-  endpoint: string;
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
-  status: number;
-  requestPayload?: any;
-  responsePayload: any;
-  durationMs: number;
+  name?: string;
+  email?: string;
 }
