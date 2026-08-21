@@ -18,7 +18,7 @@ const migration: Migration = {
   },
 
   down: async (db: Kysely<unknown>) => {
-    await db.schema.dropTable("users").execute();
+    await db.schema.dropTable("users").ifExists().execute();
   },
 };
 

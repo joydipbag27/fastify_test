@@ -7,6 +7,7 @@
     "build": "tsc",
     "dev": "tsx watch src/server.ts",
     "db:migrate": "tsx src/db/migrate.ts",
+    "db:cleanup": "tsx src/db/cleanup.ts",
     "client:dev": "pnpm --filter fastify-auth-client dev",
     "client:build": "pnpm --filter fastify-auth-client build"
   },

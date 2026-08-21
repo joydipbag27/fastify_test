@@ -14,4 +14,12 @@ export interface Database {
     expires_at: Date;
     created_at: Generated<Date>;
   };
+  user_totp : {
+    id: Generated<string>,
+    user_id: string,
+    secret: string,
+    enabled: boolean,
+    verified_at: Date,
+    created_at: Generated<Date>,
+  }
 }

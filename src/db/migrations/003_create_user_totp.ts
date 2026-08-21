@@ -4,14 +4,16 @@ import type { Migration } from "kysely/migration";
 const migration: Migration = {
   up: async (db) => {
     await db.schema
-      .createTable("sessions")
+      .createTable("user_totps")
       .addColumn("id", "uuid", (col) =>
         col.primaryKey().defaultTo(sql`gen_random_uuid()`),
       )
       .addColumn("user_id", "uuid", (col) =>
         col.notNull().references("users.id").onDelete("cascade").unique(),
       )
-      .addColumn("expires_at", "timestamp", (col) => col.notNull())
+      .addColumn("secret", "text", (col) => col.notNull())
+      .addColumn("enabled", "boolean", (col) => col.notNull().defaultTo(false))
+      .addColumn("verified_at", "timestamp")
       .addColumn("created_at", "timestamp", (col) =>
         col.notNull().defaultTo(sql`now()`),
       )
@@ -19,7 +21,7 @@ const migration: Migration = {
   },
 
   down: async (db) => {
-    await db.schema.dropTable("sessions").ifExists().execute();
+    await db.schema.dropTable("user_totps").ifExists().execute();
   },
 };
 
