@@ -7,8 +7,8 @@ import createPasskeys from "./migrations/005_create_passkeys.js";
 
 await createTotps.down!(db);
 await createSessions.down!(db);
-await createUsers.down!(db);
-await createChallenges.down!(db);
 await createPasskeys.down!(db);
+await createChallenges.down!(db);
+await createUsers.down!(db);
 
 await db.destroy();

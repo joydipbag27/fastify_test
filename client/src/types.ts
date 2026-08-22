@@ -41,3 +41,16 @@ export interface ApiResponse<T = any> {
   name?: string;
   email?: string;
 }
+
+export interface PasskeySetupResponse {
+  success: boolean;
+  message?: string;
+  options?: any;
+}
+
+export interface PasskeyOptionResponse {
+  success: boolean;
+  message?: string;
+  options?: any;
+}
+

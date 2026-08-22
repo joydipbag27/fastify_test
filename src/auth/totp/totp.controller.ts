@@ -136,12 +136,25 @@ export const verifySetup = async (
 
 export const login = async (request: TOTPLoginRequest, reply: FastifyReply) => {
   const verificationCode = request.body.code;
-  const userId = request.body.userId;
+  const email = request.body.email;
+
+  const userInfo = await db
+    .selectFrom("users")
+    .select("id")
+    .where("email", "=", email)
+    .executeTakeFirst();
+
+  if (!userInfo) {
+    return reply.code(404).send({
+      success: false,
+      message: "User not found",
+    });
+  }
 
   const totpInfo = await db
     .selectFrom("user_totps")
     .select(["secret", "enabled"])
-    .where("user_id", "=", userId)
+    .where("user_id", "=", userInfo.id)
     .executeTakeFirst();
 
   if (!totpInfo || !totpInfo.enabled) {
@@ -166,7 +179,7 @@ export const login = async (request: TOTPLoginRequest, reply: FastifyReply) => {
   const existingSessions = await db
     .selectFrom("sessions")
     .select(["id", "created_at"])
-    .where("user_id", "=", userId)
+    .where("user_id", "=", userInfo.id)
     .orderBy("created_at", "asc")
     .execute();
 
@@ -184,7 +197,7 @@ export const login = async (request: TOTPLoginRequest, reply: FastifyReply) => {
   const sessionInfo = await db
     .insertInto("sessions")
     .values({
-      user_id: userId,
+      user_id: userInfo.id,
       expires_at: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
     })
     .returning("id")

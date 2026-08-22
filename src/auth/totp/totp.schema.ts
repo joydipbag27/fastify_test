@@ -6,7 +6,7 @@ export const verifyTOTPSchema = z.object({
 
 export const TOTPLogin = z.object({
   code: z.coerce.string().length(6, { message: "OTP must be 6 digit" }),
-  userId: z.uuid()
+  email: z.email()
 })
 
 export type verifyTOTPInput = z.infer<typeof verifyTOTPSchema>;
