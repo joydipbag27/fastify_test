@@ -5,11 +5,15 @@
   "scripts": {
     "start": "node dist/app.js",
     "build": "tsc",
-    "dev": "tsx watch src/server.ts",
-    "db:migrate": "tsx src/db/migrate.ts",
-    "db:cleanup": "tsx src/db/cleanup.ts",
+    "dev": "concurrently -n \"backend,frontend\" -c \"cyan,magenta\" \"pnpm dev:backend\" \"pnpm dev:frontend\"",
+    "dev:all": "concurrently -n \"backend,frontend\" -c \"cyan,magenta\" \"pnpm dev:backend\" \"pnpm dev:frontend\"",
+    "dev:backend": "tsx watch src/server.ts",
+    "dev:frontend": "pnpm --filter fastify-auth-client dev",
+    "server:dev": "tsx watch src/server.ts",
     "client:dev": "pnpm --filter fastify-auth-client dev",
-    "client:build": "pnpm --filter fastify-auth-client build"
+    "client:build": "pnpm --filter fastify-auth-client build",
+    "db:migrate": "tsx src/db/migrate.ts",
+    "db:cleanup": "tsx src/db/cleanup.ts"
   },
   "devEngines": {
     "packageManager": {
@@ -38,6 +42,7 @@
     "@types/bcrypt": "^6.0.0",
     "@types/node": "^26.1.2",
     "@types/pg": "^8.21.0",
+    "concurrently": "^10.0.5",
     "tsx": "^4.23.10",
     "typescript": "^7.0.2"
   }
