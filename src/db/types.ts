@@ -14,12 +14,24 @@ export interface Database {
     expires_at: Date;
     created_at: Generated<Date>;
   };
-  user_totps : {
-    id: Generated<string>,
-    user_id: string,
-    secret: string,
-    enabled: boolean,
-    verified_at: Date | null,
-    created_at: Generated<Date>,
-  }
+  user_totps: {
+    id: Generated<string>;
+    user_id: string;
+    secret: string;
+    enabled: boolean;
+    verified_at: Date | null;
+    created_at: Generated<Date>;
+  };
+  challenges: {
+    id: Generated<string>;
+    user_id: string;
+    challenge: string;
+    expires_at: Date;
+  };
+  passkeys: {
+    user_id: string;
+    credential_id: string;
+    public_key: string;
+    counter: number;
+  };
 }
